@@ -9,16 +9,31 @@ import {
   createUserSchema,
   updateUserSchema,
 } from "./validators/userValidation.js";
+import { authorized } from "../../auth/middlewares/authorized.js";
+import { authenticated } from "../../auth/middlewares/authnticated.js";
 
 export const userRouter = Router();
-
 userRouter
   .route("/")
-  .get(getUsersController)
-  .post(validateBody(createUserSchema), createUserController);
+  .get(authenticated, authorized("admin"), getUsersController)
+  .post(
+    authenticated,
+    authorized("admin"),
+    validateBody(createUserSchema),
+    createUserController
+  );
 
 userRouter
   .route("/:id")
-  .get(getUserByIdController)
-  .patch(validateBody(updateUserSchema), updateUserController)
-  .delete(deleteUserController);
+  .get(authenticated, authorized("admin"), getUserByIdController)
+  .patch(
+    authenticated,
+    authorized("admin"),
+    validateBody(updateUserSchema),
+    updateUserController
+  )
+  .delete(
+    authenticated,
+    authorized("admin"),
+    deleteUserController
+  );
