@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import { connectDb } from "./src/config/db.js";
 import { ticketRouter } from "./src/features/tickets/routes.js";
+import { queueRouter } from "./src/features/queues/routes.js";
 import { ZodError } from "zod";
 dotenv.config()
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 
 // routes  
 app.use("/api/ticket", ticketRouter)
+app.use("/api/queues", queueRouter)
 
 app.use((error, req, res, next) => {
     if (error instanceof ZodError) {
