@@ -27,5 +27,10 @@ queueRouter
 queueRouter
   .route("/:id")
   .get(authenticated, authorized("clinic_admin  "),  getQueueByIdController)
-  .patch(authenticated, authorized("clinic_admin  "),  validateBody(updateQueueSchema), updateQueueController)
+  .patch(
+    authenticated,
+    authorized("clinic_admin"),
+    validateBody(updateQueueSchema),
+    updateQueueController
+  )
   .delete(authenticated, authorized("clinic_admin  "),  deleteQueueController);

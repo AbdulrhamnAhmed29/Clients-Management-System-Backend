@@ -2,8 +2,6 @@ import Queue from "../model/queueModel.js";
 
 export const createQueueController = async (req, res, next) => {
   try {
-
-
     const queueData = {
       ...req.body,
       createdBy: req.user.id,

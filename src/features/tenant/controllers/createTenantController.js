@@ -1,5 +1,5 @@
-import {Tenant} from "../model/model.js"
-export const createTenantController = async (req, res) => {
+import { Tenant } from "../model/model.js"
+export const createTenantController = async (req, res, next) => {
     const payload = req.body;
     try {
         const newTenant = await Tenant.create(payload)

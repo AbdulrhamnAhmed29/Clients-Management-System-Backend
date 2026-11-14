@@ -7,6 +7,10 @@ const queueSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    tenantId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Tenant"
+    },
 
     description: {
       type: String,
@@ -16,7 +20,7 @@ const queueSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      
+
     },
 
     status: {
