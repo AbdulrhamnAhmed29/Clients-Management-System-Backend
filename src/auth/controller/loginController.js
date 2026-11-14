@@ -30,7 +30,7 @@ export const loginController = async (req, res, next) => {
     }
 
     const token = jwt.sign(
-      { id: user._id.toString(), role: user.role },
+      { id: user._id.toString(), role: user.role , tenantId:user.tenantId},
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const userRoleSchema = z.enum(["admin", "employee"]);
+const userRoleSchema = z.enum(["super_admin" ,"clinic_admin", "employee"]);
 const passwordSchema = z.string().min(8, "Password must be at least 8 characters");
 
 export const isValidUserId = (id) => /^[a-f\d]{24}$/i.test(id);

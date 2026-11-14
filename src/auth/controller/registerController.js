@@ -24,7 +24,6 @@ export const registerController = async (req, res) => {
       const user =  await User.create({
             name,
             email,
-            password: hashpassword,
             role
         })
         res.status(200).json({
