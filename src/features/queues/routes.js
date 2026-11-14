@@ -9,13 +9,20 @@ import {
   createQueueSchema,
   updateQueueSchema,
 } from "./validators/queueValidation.js";
+import { authorized } from "../../auth/middlewares/authorized.js";
+import { authenticated } from "../../auth/middlewares/authnticated.js";
 
 export const queueRouter = Router();
 
 queueRouter
   .route("/")
   .get(getQueuesController)
-  .post(validateBody(createQueueSchema), createQueueController);
+  .post(
+    authenticated,
+    authorized("admin"),
+    validateBody(createQueueSchema),
+    createQueueController
+  );
 
 queueRouter
   .route("/:id")

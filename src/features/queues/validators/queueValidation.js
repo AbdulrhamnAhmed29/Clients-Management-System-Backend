@@ -9,7 +9,7 @@ const queueStatusSchema = z.enum(["active", "paused", "closed"]);
 export const createQueueSchema = z.object({
   name: z.string().trim().min(1, "Queue name is required").max(100),
   description: z.string().trim().max(500).optional(),
-  createdBy: objectIdSchema,
+  
   status: queueStatusSchema.optional(),
 });
 

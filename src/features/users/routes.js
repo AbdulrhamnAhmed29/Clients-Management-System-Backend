@@ -15,7 +15,7 @@ import { authenticated } from "../../auth/middlewares/authnticated.js";
 export const userRouter = Router();
 userRouter
   .route("/")
-  .get(authenticated, authorized("admin"), getUsersController)
+  .get(authenticated, authorized("admin" , "employee"), getUsersController)
   .post(
     authenticated,
     authorized("admin"),
