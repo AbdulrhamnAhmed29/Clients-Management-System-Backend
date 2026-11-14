@@ -46,7 +46,7 @@ export const authenticated = (req, res, next) => {
   if (
     typeof payload !== "object" ||
     typeof payload.id !== "string" ||
-    !["admin", "employee"].includes(payload.role)
+    !["super_admin", "clinic_admin", "employee"].includes(payload.role)
   ) {
     return res.status(401).json({
       success: false,
@@ -54,6 +54,6 @@ export const authenticated = (req, res, next) => {
     });
   }
 
-  req.user = { id: payload.id, role: payload.role };
+  req.user = { id: payload.id, role: payload.role  , tenantId:payload.tenantId};
   return next();
 };

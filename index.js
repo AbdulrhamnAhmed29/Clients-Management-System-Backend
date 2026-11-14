@@ -6,17 +6,19 @@ import { queueRouter } from "./src/features/queues/routes.js";
 import { userRouter } from "./src/features/users/routes.js";
 import { ZodError } from "zod";
 import { AuthRoutes } from "./src/auth/routes.js";
+import { tenantRouter } from "./src/features/tenant/routes.js";
 dotenv.config()
 const app = express();
 const PORT = process.env.PORT
 app.use(express.json());
 
 // routes  
-// auth 
+
 app.use("/api/auth", AuthRoutes)
 app.use("/api/ticket", ticketRouter)
 app.use("/api/queues", queueRouter)
 app.use("/api/users", userRouter)
+app.use("/api/tenant" , tenantRouter)
 
 app.use((error, req, res, next) => {
     if (error instanceof ZodError) {

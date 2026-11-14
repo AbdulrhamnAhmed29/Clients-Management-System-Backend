@@ -16,16 +16,16 @@ export const queueRouter = Router();
 
 queueRouter
   .route("/")
-  .get(getQueuesController)
+  .get(authenticated, authorized("clinic_admin"),  getQueuesController)
   .post(
     authenticated,
-    authorized("admin"),
+    authorized("clinic_admin  "), 
     validateBody(createQueueSchema),
     createQueueController
   );
 
 queueRouter
   .route("/:id")
-  .get(getQueueByIdController)
-  .patch(validateBody(updateQueueSchema), updateQueueController)
-  .delete(deleteQueueController);
+  .get(authenticated, authorized("clinic_admin  "),  getQueueByIdController)
+  .patch(authenticated, authorized("clinic_admin  "),  validateBody(updateQueueSchema), updateQueueController)
+  .delete(authenticated, authorized("clinic_admin  "),  deleteQueueController);

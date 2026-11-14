@@ -24,9 +24,13 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["admin", "employee"],
+      enum: ["super_admin", "clinic_admin", "employee"],
       default: "employee",
     },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+    }
   },
   { timestamps: true }
 );
