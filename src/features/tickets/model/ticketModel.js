@@ -4,7 +4,7 @@ const ticketSchema = new mongoose.Schema(
   {
     ticketNumber: {
       type: Number,
-      required: true,
+      
     },
 
     queueId: {
@@ -34,6 +34,10 @@ const ticketSchema = new mongoose.Schema(
         "cancelled",
       ],
       default: "waiting",
+    },
+    scheduledAt: {
+      type: Date,
+      required: true
     },
 
     calledAt: {

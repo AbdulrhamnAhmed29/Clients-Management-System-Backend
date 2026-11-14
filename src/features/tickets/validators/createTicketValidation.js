@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createTicketSchema = z.object({
-  ticketNumber: z.number().int().positive("ticketNumber must be a positive integer"),
+
   queueId: z
     .string()
     .regex(/^[a-f\d]{24}$/i, "queueId must be a valid MongoDB ObjectId"),
@@ -10,4 +10,5 @@ export const createTicketSchema = z.object({
   status: z
     .enum(["waiting", "serving", "completed", "skipped", "cancelled"])
     .default("waiting"),
+  scheduledAt: z.coerce.date("scheduledAt must be a valid date"),
 });

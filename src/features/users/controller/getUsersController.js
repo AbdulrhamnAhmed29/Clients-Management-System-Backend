@@ -14,27 +14,32 @@ export const getUsersController = async (req, res, next) => {
     });
   }
 
-  const { page, limit, role } = validation.data;
+  const { cursor, limit, role } = validation.data;
   const filter = role ? { role } : {};
 
-  try {
-    const [users, total] = await Promise.all([
-      User.find(filter)
-        .select("-password")
-        .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit),
-      User.countDocuments(filter),
-    ]);
+  if (cursor) {
+    filter._id = { $gt: cursor }
+  }
 
+  let hasMore = false;
+
+  try {
+    const [users] = await Promise.all([
+      User.find(filter)
+        .select(" role name")
+        .sort({ createdAt: -1 })
+        .limit(limit + 1),
+    ]);
+    if (users.length > limit) {
+      hasMore = true;
+      users.pop();
+    }
+
+    const nextCursor = hasMore ? users[users.length - 1]._id : null
     return res.status(200).json({
       users,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
+      nextCursor
+
     });
   } catch (error) {
     return next(error);

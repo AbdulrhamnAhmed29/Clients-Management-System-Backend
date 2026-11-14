@@ -4,11 +4,19 @@ import User from "../../features/users/model/userModel.js";
 
 export const loginController = async (req, res, next) => {
   const { email, password } = req.body;
+  const normalizedEmail = String(email || "").trim().toLowerCase();
 
   try {
-    const user = await User.findOne({ email }).select("+password");
-    const passwordMatches =
-      user && (await bcrypt.compare(password, user.password));
+    const user = await User.findOne({ email: normalizedEmail }).select("+password");
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const passwordMatches = await bcrypt.compare(password, user.password);
 
     if (!passwordMatches) {
       return res.status(401).json({
@@ -38,7 +46,6 @@ export const loginController = async (req, res, next) => {
       .json({
         success: true,
         message: "Login successful",
-        token,
         user: {
           id: user._id,
           name: user.name,

@@ -1,3 +1,4 @@
+import Queue from "../../queues/model/queueModel.js";
 import Ticket from "../model/ticketModel.js";
 import { createTicketSchema } from "../validators/createTicketValidation.js";
 
@@ -14,16 +15,31 @@ export const createTicketController = async (req, res, next) => {
     });
   }
 
-  const { ticketNumber, queueId, customerName, customerPhone, status } =
-    validation.data;
+  const {
+    queueId,
+    customerName,
+    customerPhone,
+    status,
+    scheduledAt,
+  } = validation.data;
 
   try {
+
+    const updateQueue = await Queue.findOneAndUpdate({ _id: queueId },
+      { $inc: { lastTicketNumber: 1 } },
+      { new: true }
+    )
+    if (!updateQueue) {
+      return res.status(404).json({ message: "Queue not found" });
+    }
+    const ticketNumber = updateQueue.lastTicketNumber;
     const ticket = await Ticket.create({
-      ticketNumber,
+      ticketNumber: ticketNumber,
       queueId,
       customerName,
       customerPhone,
       status,
+      scheduledAt,
     });
 
     return res.status(201).json({

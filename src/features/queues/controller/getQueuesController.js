@@ -15,25 +15,22 @@ export const getQueuesController = async (req, res, next) => {
   }
 
   const { page, limit, status } = validation.data;
-  const filter = status ? { status } : {};
+  const filter = status ? {
+    status,
+    createdBy,
+  } : {};
 
   try {
     const [queues, total] = await Promise.all([
       Queue.find(filter)
         .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
         .limit(limit),
       Queue.countDocuments(filter),
     ]);
 
     return res.status(200).json({
       queues,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit),
-      },
+    
     });
   } catch (error) {
     return next(error);
